@@ -41,7 +41,7 @@ names(trainingSet) <- features$V2
 trainingLabels$V1 <- activities$V2[trainingLabels$V1]
 typeColumn1 = rep(typeofData[1], n= nrow(trainingSet))
 
-trainingSet<- cbind(subject= trainingSubjects, dataType= typeColumn1, activity= trainingLabels$V1, trainingSet)
+trainingSet<- cbind(subject = trainingSubjects$V1, dataType = typeColumn1, activity= trainingLabels$V1, trainingSet)
 
 
 #Transforming TestSet
@@ -49,17 +49,16 @@ testSet <- testSet[,measurementVec]
 names(testSet) <- features$V2
 testLabels$V1 <- activities$V2[testLabels$V1]
 typeColumn2 = rep(typeofData[2], n= nrow(trainingSet))
-testSet<- cbind(subject= testSubjects, dataType= typeColumn2, activity= testLabels$V1, testSet)
+testSet<- cbind(subject = testSubjects$V1, dataType= typeColumn2, activity= testLabels$V1, testSet)
 
 #Binding training and test datasets  to obtain final data set
 
 finalDataSet <- rbind(trainingSet, testSet)
 
-colnames(finalDataSet)[1] <- "subject"
 
-#printing to the console and outputting in csv file
-print(finalDataSet)
-write.table(finalDataSet, "myTidyDataSet1.csv", sep=",")
+
+#outputting in csv file
+write.table(finalDataSet, "myTidyDataSet1.txt", row.names = FALSE, quote = FALSE)
 
 
 
@@ -73,12 +72,8 @@ meltedDF <- melt(finalDataSet, id =c("subject", "activity"), measure.vars= names
 secondTidyDF <- dcast(meltedDF, subject+activity ~ variable, mean)
 
 
-#printing to the console and outputting in csv file
-print(secondTidyDF)
-write.table(secondTidyDF, "myTidyDataSet2.csv", sep=",")
-
-
-
+#outputting csv file
+write.table(secondTidyDF, "myTidyDataSet2.txt", row.names = FALSE, quote = FALSE)
 
 
 
